@@ -476,6 +476,7 @@ $("submit").addEventListener("click", async ()=>{
   }catch(e){
     const msg = e.code==="name_taken" ? "이미 같은 이름으로 참여한 기록이 있어요. 처음 투표했던 브라우저에서 열거나, 동명이인이라면 이름 뒤에 구분할 수 있는 표시를 붙여주세요."
       : e.code==="already_voted" ? "이 브라우저에서는 이미 투표했어요. 새로고침하면 내 선택을 볼 수 있어요."
+      : e.code==="storage_not_configured" ? "투표 저장소가 아직 연결되지 않았어요. 관리자에게 알려주세요. (Vercel Storage에서 Upstash Redis 연결 필요)"
       : "제출하지 못했어요. 잠시 후 다시 시도해주세요.";
     showNotice($("v-select").querySelector(".wrap"), msg, true);
   }finally{ S.busy=false; $("submit").textContent="제출하기"; renderSelect(); }
