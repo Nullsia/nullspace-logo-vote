@@ -1,0 +1,6 @@
+{
+  "name": "nullspace-logo-vote",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=18" }
+}
