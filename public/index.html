@@ -48,6 +48,11 @@ p{margin:0}
 .brand:focus-visible{outline:2px solid var(--rank2);outline-offset:4px}
 .brand b{font-family:var(--f-num);font-weight:700;letter-spacing:.06em;font-size:16px}
 .brand span{color:var(--fg-2);font-size:14px;padding-left:12px;border-left:1px solid var(--line)}
+.hdr-r{display:flex;align-items:center;gap:20px;min-width:0}
+.theme{width:36px;height:36px;flex:none;border-radius:50%;border:1px solid var(--line);background:var(--surface);color:var(--fg-2);display:grid;place-items:center;cursor:pointer}
+.theme:hover{background:var(--line-soft)}
+.theme .sun{display:none}
+:root[data-theme="dark"] .theme .sun{display:block}:root[data-theme="dark"] .theme .moon{display:none}
 .steps{display:flex;align-items:center;gap:8px;list-style:none;margin:0;padding:0;min-width:0}
 .steps li{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);white-space:nowrap}
 .steps li+li::before{content:"";width:16px;height:1px;background:var(--line);margin-right:2px}
@@ -56,6 +61,7 @@ p{margin:0}
 .steps li.on{color:var(--fg-2)}
 .steps li.cur{color:var(--fg);font-weight:700}
 @media (max-width:860px){.steps li:not(.cur) .lbl{display:none}.brand span{display:none}}
+@media (max-width:480px){.hdr-r{gap:10px}.steps{gap:4px}.steps .lbl{display:none}.steps li+li::before{display:none}}
 
 main{padding-block:56px 96px}
 .view[hidden]{display:none!important}
@@ -107,7 +113,7 @@ main{padding-block:56px 96px}
 .picks{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
 .slots{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .slot{display:flex;align-items:center;gap:8px;height:36px;padding:6px 12px 6px 8px;border-radius:10px;border:1px solid var(--line);background:var(--surface);font-size:13px;font-weight:700}
-.slot.empty{border-style:dashed;background:transparent;color:var(--muted);font-weight:400}
+.slot.empty{border-style:dashed;background:transparent;color:var(--muted);font-weight:400;padding:6px 12px 6px 8px;text-align:left}
 .slot.empty .badge{opacity:.35}
 .badge{display:inline-block;border-radius:999px;padding:2px 10px;font:700 12px var(--f-body);color:var(--on-rank);white-space:nowrap}
 .b1{background:var(--rank1)}.b2{background:var(--rank2)}.b3{background:var(--rank3);color:var(--on-rank3)}
@@ -199,6 +205,7 @@ textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 1px var(--i
 .row.p1 .fill{background:var(--rank1)}.row.p2 .fill{background:var(--rank2)}.row.p3 .fill{background:var(--rank3)}
 .pct{font:700 15px var(--f-num);text-align:right;font-variant-numeric:tabular-nums}
 .pct.zero{color:var(--muted)}
+.pct .cnt{display:block;font:500 12px var(--f-body);color:var(--muted);margin-top:2px}
 @media (max-width:640px){.row{grid-template-columns:20px 84px minmax(0,1fr) 52px;gap:12px;padding:12px}.row .no{display:none}.row .tile{height:44px}}
 .empty{padding:40px 24px;text-align:center;color:var(--muted)}
 .admin{border:1px dashed var(--line);border-radius:16px;padding:20px;display:flex;flex-direction:column;gap:14px;background:var(--surface)}
@@ -210,6 +217,13 @@ textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 1px var(--i
 .op b{font-size:13px;color:var(--fg-2)}
 .op p{white-space:pre-wrap;font-size:14px;line-height:1.7;overflow-wrap:anywhere}
 .admin h3{font-size:15px}
+.ptbl{overflow-x:auto}
+.ptbl table{width:100%;border-collapse:collapse;font-size:13px;white-space:nowrap}
+.ptbl th{text-align:left;font-weight:700;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--line)}
+.ptbl td{padding:9px 10px;border-bottom:1px solid var(--line-soft)}
+.ptbl tr:last-child td{border-bottom:0}
+.ptbl td.n{font:700 13px var(--f-num)}
+.ptbl td.none{color:var(--muted)}
 .fb{border-top:1px solid var(--line-soft);padding-top:12px;display:flex;flex-direction:column;gap:4px}
 .fb p{white-space:pre-wrap;font-size:14px;overflow-wrap:anywhere}
 .tag{display:inline-block;font-size:11px;font-weight:700;color:var(--fg-2);background:var(--line-soft);border-radius:6px;padding:1px 8px}
@@ -225,7 +239,10 @@ textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 1px var(--i
 <header class="hdr">
   <div class="wrap">
     <button class="brand" id="home" type="button" aria-label="첫 화면으로"><b>NULL SPACE</b><span>로고 투표</span></button>
-    <ol class="steps" id="steps"></ol>
+    <div class="hdr-r">
+      <ol class="steps" id="steps"></ol>
+      <button class="theme" id="theme" type="button" aria-label="다크 모드로 전환"><svg class="moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg><svg class="sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></button>
+    </div>
   </div>
 </header>
 
@@ -334,7 +351,7 @@ textarea:focus{outline:none;border-color:var(--ink);box-shadow:0 0 0 1px var(--i
       </div>
       <div class="admin" id="admin" hidden>
         <h3>관리자에게만 보여요</h3>
-        <div><div class="sec-t">참여자 <span id="pCount"></span></div><p style="font-size:14px;color:var(--fg-2)" id="pList"></p></div>
+        <div><div class="sec-t">참여자별 투표 <span id="pCount"></span></div><div class="ptbl" id="pList"></div></div>
       </div>
     </div>
   </section>
@@ -397,6 +414,18 @@ function go(step){
   clearInterval(resTimer);
   if(step===4){ renderResults(); loadResults(); resTimer = setInterval(loadResults, 15000); }
 }
+
+/* theme: starts from the system setting, the button flips it and remembers the choice */
+function applyTheme(t){
+  document.documentElement.dataset.theme = t;
+  $("theme").setAttribute("aria-label", t==="dark" ? "라이트 모드로 전환" : "다크 모드로 전환");
+}
+let savedTheme = null; try{ savedTheme = localStorage.getItem("ns-theme"); }catch(e){}
+applyTheme(savedTheme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
+$("theme").addEventListener("click", ()=>{
+  const t = document.documentElement.dataset.theme==="dark" ? "light" : "dark";
+  applyTheme(t); try{ localStorage.setItem("ns-theme", t); }catch(e){}
+});
 
 /* step 1 */
 $("jobs").innerHTML = JOBS.map(j=>`<button type="button" class="chip" aria-pressed="false" data-job="${j}">${j}</button>`).join("");
@@ -513,15 +542,15 @@ $("filter").addEventListener("click", e=>{
 function renderResults(){
   if(!loaded) return;
   const vs = S.votes.filter(v=>S.filter==="전체" || v.job===S.filter);
-  const score = Array(9).fill(0);
-  vs.forEach(v=>{ [1,2,3].forEach(r=>{ const n=v["r"+r]; if(n>=1&&n<=8) score[n]+=W[r]; }); });
+  const score = Array(9).fill(0), cnt = Array(9).fill(0);
+  vs.forEach(v=>{ [1,2,3].forEach(r=>{ const n=v["r"+r]; if(n>=1&&n<=8){ score[n]+=W[r]; cnt[n]++; } }); });
   const total = score.reduce((a,b)=>a+b,0);
   if(!total){ $("list").innerHTML = `<div class="empty">${S.filter==="전체"?"아직 집계된 투표가 없어요.":`${S.filter} 직군의 투표가 아직 없어요.`}</div>`; return; }
   const rows = [1,2,3,4,5,6,7,8].map(n=>({n, p: score[n]/total*100})).sort((a,b)=>b.p-a.p || a.n-b.n);
   $("list").innerHTML = rows.map((x,i)=>`<div class="row ${i===0?"top":""} ${i<3?"podium p"+(i+1):""}">
     <span class="rn">${i+1}</span><span class="tile">${logoSvg(x.n-1)}</span><span class="no">${no(x.n)}</span>
     <span class="track" role="img" aria-label="${no(x.n)} ${x.p.toFixed(1)}%"><span class="fill" style="width:${x.p}%"></span></span>
-    <span class="pct ${x.p?"":"zero"}">${x.p.toFixed(1)}%</span></div>`).join("");
+    <span class="pct ${x.p?"":"zero"}">${x.p.toFixed(1)}%${S.admin?`<span class="cnt">${cnt[x.n]}명 선택</span>`:""}</span></div>`).join("");
 }
 
 function renderOpinions(){
@@ -537,6 +566,25 @@ function renderOpinions(){
   });
 }
 
+/* admin: who voted for what, joined on the voter id */
+function renderAdmin(rows){
+  rows.sort((a,b)=>(a.at||0)-(b.at||0));
+  $("pCount").textContent = `${rows.length}명`;
+  const box = $("pList"); box.textContent = "";
+  if(!rows.length){ const p=document.createElement("p"); p.className="muted"; p.textContent="아직 없어요."; box.append(p); return; }
+  const t = document.createElement("table");
+  t.innerHTML = "<thead><tr><th>이름</th><th>직종</th><th>1위</th><th>2위</th><th>3위</th><th>제출 시각</th></tr></thead>";
+  const tb = document.createElement("tbody");
+  rows.forEach(r=>{
+    const tr = document.createElement("tr");
+    const at = r.at ? new Date(r.at).toLocaleString("ko-KR",{month:"numeric",day:"numeric",hour:"2-digit",minute:"2-digit"}) : "";
+    [[r.name||"",""],[r.job||"",""],[r.r1?no(r.r1):"–",r.r1?"n":"none"],[r.r2?no(r.r2):"–",r.r2?"n":"none"],[r.r3?no(r.r3):"–",r.r3?"n":"none"],[at,"none"]].forEach(([v,c])=>{
+      const td = document.createElement("td"); if(c) td.className = c; td.textContent = v; tr.append(td);
+    });
+    tb.append(tr);
+  });
+  t.append(tb); box.append(t);
+}
 async function loadResults(){
   try{ const j = await API("results"); S.votes = j.votes; S.feedback = j.feedback || []; loaded = true; renderOpinions(); if(S.step===4) renderResults(); }
   catch(e){ if(!loaded) $("list").innerHTML = `<div class="empty">결과를 불러오지 못했어요. 잠시 후 새로고침해주세요.</div>`; }
@@ -546,10 +594,8 @@ async function loadResults(){
 /* admin: open the results page with ?admin=<ADMIN_KEY> */
 async function loadAdmin(){
   let j; try{ j = await API("admin", {headers:{"x-admin-key":adminKey}}); }catch(e){ return; }
-  $("admin").hidden = false;
-  const ps = j.people.sort((a,b)=>(a.at||0)-(b.at||0));
-  $("pCount").textContent = `${ps.length}명`;
-  $("pList").textContent = ps.length ? ps.map(p=>`${p.name} (${p.job})`).join(", ") : "아직 없어요.";
+  $("admin").hidden = false; S.admin = true; if(S.step===4) renderResults();
+  renderAdmin(j.people);
 }
 
 /* boot */
